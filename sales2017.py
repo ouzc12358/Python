@@ -28,3 +28,4 @@ typeofEMF = sales_2017[type_column]
 print(type_column.append(c))
 print(typeofEMF)
 print(typeofEMF.head(3))
+print("hello again")
