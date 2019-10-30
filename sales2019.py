@@ -1,1 +1,4 @@
-print ("sales 2019")
+import pandas as pd
+d = pd.Series(range(20))
+print(d)
+print(d.cumsum)
