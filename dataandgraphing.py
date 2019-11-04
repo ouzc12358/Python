@@ -28,9 +28,9 @@ df['100ma']= df['Adj Close'].rolling(window=100,min_periods=0).mean()
 #df.to_csv('tsla1.csv')
 
 #usorder['average']
-ax1= plt.subplot2grid((500,1),(0,0),rowspan=5,colspan=1)
+ax1= plt.subplot2grid((6,1),(0,0),rowspan=5,colspan=1)
 #print(ax1)
-ax2= plt.subplot2grid((500,1),(400,0),rowspan=1,colspan=1,sharex=ax1)
+ax2= plt.subplot2grid((6,1),(5,0),rowspan=1,colspan=1,sharex=ax1)
 #ax1.plot(usorder.index,usorder['Net value'])
 ax1.plot(df.index,df['Adj Close'])
 ax1.plot(df.index,df['100ma'])
