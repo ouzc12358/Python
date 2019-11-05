@@ -1,7 +1,7 @@
 import bs4 as bs
 import datetime as dt
 import os
-#import pandas as pd
+import pandas as pd
 import pandas_datareader.data as web
 import pickle
 import requests
@@ -24,7 +24,7 @@ def save_sp500_tickers():
    #return tickers
 
 
-#save_sp500_tickers()
+# save_sp500_tickers()
 
 
 def get_data_from_yahoo(reload_sp500=False):
