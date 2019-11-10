@@ -1,11 +1,14 @@
 import bs4 as bs
 import datetime as dt
+import matplotlib.pyplot as plt
+from matplotlib import style
 import os
 import pandas as pd
 import pandas_datareader.data as web
 import pickle
 import requests
 
+style.use('ggplot')
 
 def save_sp500_tickers():
     resp = requests.get('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
