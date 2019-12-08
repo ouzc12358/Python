@@ -1,0 +1,10 @@
+[14652:12188:1202/202222.947:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 1 time(s)
+[14652:12188:1202/202222.947:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 2 time(s)
+[14652:12188:1202/202222.962:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 3 time(s)
+[14652:12188:1202/202222.962:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 4 time(s)
+[14652:12188:1202/202222.994:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 5 time(s)
+[14652:12188:1202/202223.009:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 6 time(s)
+[14652:9944:1202/202223.025:WARNING:load_error_reporter.cc(78)] Extension error: Failed to load extension from: C:\Users\CNTHWAN8\AppData\Local\Temp\scoped_dir10876_1613212542\internal. Manifest file is missing or unreadable
+[14652:12188:1202/202223.025:ERROR:browser_gpu_channel_host_factory.cc(138)] Failed to launch GPU process.
+[14652:9944:1202/202235.688:WARNING:pref_notifier_impl.cc(40)] Pref observer for browser.relaunch_notification_period found at shutdown.
+[14652:9944:1202/202235.688:WARNING:pref_notifier_impl.cc(40)] Pref observer for media_router.cast_allow_all_ips found at shutdown.

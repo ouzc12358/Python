@@ -1,0 +1,10 @@
+[10636:7800:1202/210559.473:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 1 time(s)
+[10636:7800:1202/210559.479:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 2 time(s)
+[10636:7800:1202/210559.535:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 3 time(s)
+[10636:7800:1202/210559.620:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 4 time(s)
+[10636:7800:1202/210559.628:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 5 time(s)
+[10636:7800:1202/210559.656:WARNING:gpu_process_host.cc(1220)] The GPU process has crashed 6 time(s)
+[10636:7800:1202/210559.657:ERROR:browser_gpu_channel_host_factory.cc(138)] Failed to launch GPU process.
+[10636:7800:1202/210600.368:ERROR:browser_gpu_channel_host_factory.cc(138)] Failed to launch GPU process.
+[10636:13200:1202/210608.840:WARNING:pref_notifier_impl.cc(40)] Pref observer for browser.relaunch_notification_period found at shutdown.
+[10636:13200:1202/210608.840:WARNING:pref_notifier_impl.cc(40)] Pref observer for media_router.cast_allow_all_ips found at shutdown.
