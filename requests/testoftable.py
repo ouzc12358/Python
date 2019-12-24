@@ -1,7 +1,7 @@
 #a = "FEW315.025.A.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY"
 #b= 'FEW315.750.H.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
 #b= 'FEW315.801.H.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
-#b= 'FEW315.801.K.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
+#b= 'FEW315.801.K.1.D.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
 #b= 'FEW315.750.H.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
 ''' b=input("code:")
 def clean_mark(s):

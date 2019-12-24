@@ -6,6 +6,11 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest, time, re
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+
 
 def clean_mark(s):
     s=s.replace('.','')
@@ -92,19 +97,23 @@ def code_selection():
     if driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_1']/a").text[0]==letter[0]:
         driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_1']/a").click()
     else:
+        time.sleep(1)
         driver.find_element(By.CSS_SELECTOR, ".chC2p").click()
-
-
     #driver.find_element(By.CSS_SELECTOR, ".chC2p").click()
     #driver.find_element_by_xpath("//a[contains(text(),'K : Elastomer')]").click()
     ''' time.sleep(1)
     driver.find_element(By.LINK_TEXT, "1 : Standard").click()
     time.sleep(1)
-    driver.find_element(By.CSS_SELECTOR, ".chSC2p").click()
+    driver.find_element(By.CSS_SELECTOR, ".chSC2p").click() '''
     time.sleep(1)
-    driver.find_element(By.LINK_TEXT, "S : Stainless steel 316").click()
+    #driver.find_element(By.LINK_TEXT, "S : Stainless steel 316").click()
+    
+    #driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_3']/a").click()
     time.sleep(1)
-    driver.find_element(By.CSS_SELECTOR, ".chRow:nth-child(2) .chC2p").click()
+    WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//a[.//td[text()='D']]"))).click()
+    #driver.find_element_by_partial_link_text("C :").click()
+    ''' time.sleep(1)
+    driver.find_element(By.CSS_SELECTOR, ".chRow:nth-child(2) .chC2p").click() '''
     time.sleep(1)
     driver.find_element(By.LINK_TEXT, "C2 : Flanges AWWA C207 Class D").click()
     time.sleep(1)
@@ -113,12 +122,12 @@ def code_selection():
     driver.find_element(By.ID, "Header_cmdSave").click()
     time.sleep(3)
     coded_value=driver.find_element_by_id('Cntnt_txtCopy')
-    print(coded_value.text) '''
+    print(coded_value.text)
     
 
 if __name__ == "__main__":
     login()
     filtercode()
     code_selection()
-    driver.close()
+    #driver.close()
 
