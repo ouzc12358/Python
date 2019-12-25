@@ -2,7 +2,17 @@
 #b= 'FEW315.750.H.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
 #b= 'FEW315.801.H.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
 #b= 'FEW315.801.K.1.D.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
-#b= 'FEW315.750.H.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
+b= 'FEW315.750.H.1.S.1.A1.B.1.A.1.A.0.P.1.B.3.A.1.M5-V3.CWY'
+
+letter = b.split('.')
+code = letter[1:len(letter)]
+a= [1,51,101,201,351,401,501,601,701,801]
+i = 0
+for i in range(len(a)):
+    b = a[i]%5
+    print(b)
+
+
 ''' b=input("code:")
 def clean_mark(s):
     s=s.replace('.','')

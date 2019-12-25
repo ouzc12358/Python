@@ -12,41 +12,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 
-def clean_mark(s):
-    s=s.replace('.','')
-    s=s.replace('-','')
-    return s 
-b = input("code:")
-a = clean_mark(b)
-#def disassemble(product,maincode,size,letter,language,verification,certification):
-product = a[0:3]
-maincode = a[0:6]
-size =int(a[6:9])
-letter = a[9:27]
-language = a[27:29]
-verification = a[29:31]
-certificate =a[31:34]
+_code_ = input("code:")
+_code_ = _code_.split('.')
+_selection_ = _code_[1:len(_code_)]
+maincode= _code_[0]
+size = int(_code_[1])
 
-def transformsize(_size):
-    if _size%10 == 0:
-        encode = 0.0149*_size-8.2
-        encode = round(encode)
-        _tmp = str(encode)
-        _sizecode = ".chRow:nth-child("+_tmp+") .chC2p"
-    elif _size == 651:
-        _sizecode = ".chRow:nth-child(14) .chC2p"
-    else:
-        encode = 0.011*_size+6.4755
-        encode = round(encode)
-        _tmp = str(encode)
-        _sizecode = ".chRow:nth-child("+_tmp+") .chC2p"
-    return _sizecode
+if size%5==1:
+    size = size + 999
+else:
+    size = size    
 
-
-driver=webdriver.Chrome()
-''' chrome_options = webdriver.ChromeOptions()
+chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
-driver = webdriver.Chrome(chrome_options=chrome_options) '''
+driver = webdriver.Chrome(chrome_options=chrome_options)
 def login():
     driver.get("https://configurx.it.abb.com/configurx/content/Login.aspx")
     #username = input("CX user-name:")
@@ -60,7 +39,7 @@ def login():
     #market = input("please select your market form list ")
     market = input("please enter your market:")
     market = "(USD) "+market
-    print(market)
+    #print(market)
     Select(driver.find_element_by_xpath("//select")).select_by_visible_text(market)
 
     #Select(driver.find_element_by_id("cboMarket")).select_by_visible_text(market)
@@ -71,63 +50,57 @@ def filtercode():
     
     time.sleep(1)
     page=driver.get("https://configurx.it.abb.com/CXEngineX/content/jModelList.aspx")
-    #driver.find_element_by_id("Cntnt_txtFilterCode").clear()
-    #maincode = input("输入主code:")
+    time.sleep(1)
     driver.find_element_by_id("Cntnt_txtFilterCode").send_keys(maincode)
     driver.find_element_by_id("Cntnt_cmdFilter").click()
-    time.sleep(2)
+    time.sleep(1)
    
     if size>=700:
-        driver.find_element_by_link_text("FEW315_700").click()
+        bore = maincode+"_700"
     else:
-        driver.find_element_by_link_text("FEW315_C").click()
-    
+        bore = maincode+"_C"
+    driver.find_element_by_link_text(bore).click()
 
 def code_selection():
-    time.sleep(1)
+    #time.sleep(1)
     driver.get("https://configurx.it.abb.com/CXEngineX/Content/JModelConfiguration.aspx")
-      
     time.sleep(1)
-    driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_0']/a").click()
-    size_selection = transformsize(size) 
-    time.sleep(1)   
-    driver.find_element(By.CSS_SELECTOR, size_selection).click()
-    time.sleep(1)
-    driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_1']/a").click()
-    if driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_1']/a").text[0]==letter[0]:
-        driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_1']/a").click()
+    i = 0
+    for i in range(len(_selection_)-3):
+        dropmenu = "//div[@id='TabMasterContent_ddl_"+str(i)+"']/a"
+       
+        time.sleep(0.5)
+        if driver.find_element_by_xpath(dropmenu).text[0]==_selection_[i]:
+            pass
+        else:
+            driver.find_element_by_xpath(dropmenu).click()
+            _tmp_ = "//a[.//td[text()='" +_selection_[i]+"']]"
+            time.sleep(1)
+            WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,_tmp_))).click()
+            i = i+1        
+    if _selection_[-1]=='CWY':
+        pass
     else:
+        driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_22']/a").click()
+        _certificate_ = "//a[.//td[text()='" +_selection_[-1]+"']]"
         time.sleep(1)
-        driver.find_element(By.CSS_SELECTOR, ".chC2p").click()
-    #driver.find_element(By.CSS_SELECTOR, ".chC2p").click()
-    #driver.find_element_by_xpath("//a[contains(text(),'K : Elastomer')]").click()
-    ''' time.sleep(1)
-    driver.find_element(By.LINK_TEXT, "1 : Standard").click()
-    time.sleep(1)
-    driver.find_element(By.CSS_SELECTOR, ".chSC2p").click() '''
-    time.sleep(1)
-    #driver.find_element(By.LINK_TEXT, "S : Stainless steel 316").click()
-    
-    #driver.find_element_by_xpath("//div[@id='TabMasterContent_ddl_3']/a").click()
-    time.sleep(1)
-    WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH,"//a[.//td[text()='D']]"))).click()
-    #driver.find_element_by_partial_link_text("C :").click()
-    ''' time.sleep(1)
-    driver.find_element(By.CSS_SELECTOR, ".chRow:nth-child(2) .chC2p").click() '''
-    time.sleep(1)
-    driver.find_element(By.LINK_TEXT, "C2 : Flanges AWWA C207 Class D").click()
-    time.sleep(1)
-    driver.find_element(By.CSS_SELECTOR, ".chRow:nth-child(4) .chC2p").click()
+        WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,_certificate_))).click()
     time.sleep(1)
     driver.find_element(By.ID, "Header_cmdSave").click()
-    time.sleep(3)
+    ''' _codevalue_ = WebDriverWait(driver,10).until(EC.text_to_be_present_in_element(By.ID,'Cntnt_txtCopy'))
+    print(_codevalue_.text) '''
+    time.sleep(2)
     coded_value=driver.find_element_by_id('Cntnt_txtCopy')
     print(coded_value.text)
-    
+
 
 if __name__ == "__main__":
+    
+    t1=time.time()
     login()
     filtercode()
     code_selection()
-    #driver.close()
+    driver.close()
+    t = time.time()-t1
+    print(t)
 
