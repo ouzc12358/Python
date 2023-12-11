@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from docx import Document
 import os
 import logging
 from concurrent.futures import ThreadPoolExecutor
@@ -42,18 +41,11 @@ def parse_article(content):
         body = soup.find('body')
         if not body:
             raise ValueError("Body tag not found")
-
-        # Using body.text to capture all text within the body tag
         article_content = body.text.strip()
         return title, article_content
     except Exception as e:
         logging.error(f"Error parsing article: {e}")
         return None, None
-
-def append_to_word(doc, article_content, title):
-    doc.add_heading(title, level=1)
-    doc.add_paragraph(article_content)
-    doc.add_page_break()
 
 def main():
     os.makedirs('articles', exist_ok=True)
@@ -63,20 +55,17 @@ def main():
     if main_page_content:
         article_links = parse_main_page(main_page_content)
 
-        logging.info(f"Total articles found: {len(article_links)}")
+        with open(os.path.join('articles', 'all_articles.txt'), 'w', encoding='utf-8') as file:
+            with ThreadPoolExecutor(max_workers=10) as executor:
+                results = executor.map(fetch_and_parse_article, article_links)
 
-        doc = Document()
+                for result in results:
+                    if result:
+                        title, content = result
+                        file.write(f"Title: {title}\n\n{content}\n\n{'-'*40}\n\n")
+                        logging.info(f"Article '{title}' written to text file.")
 
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            results = executor.map(fetch_and_parse_article, article_links)
-
-            for result in results:
-                if result:
-                    title, content = result
-                    append_to_word(doc, content, title)
-
-        doc.save(os.path.join('articles', 'all_articles.docx'))
-        logging.info("All articles saved to one Word document.")
+        logging.info("All articles saved to a text file.")
 
 if __name__ == "__main__":
     main()
