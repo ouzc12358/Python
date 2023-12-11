@@ -20,15 +20,15 @@ def fetch_page(url):
 def parse_main_page(content):
     soup = BeautifulSoup(content, 'html.parser')
     links = soup.find_all('a')
-    article_links = [link['href'] for link in links if link['href'].endswith('.html')]
-    return ["http://paulgraham.com/" + link for link in article_links]
+    article_links = [link['href'] for link in links if 'html' in link['href']]
+    return ["http://paulgraham.com/" + link for link in article_links if not link.startswith("http")]
 
-def fetch_and_save_article(url):
+def fetch_and_parse_article(url):
     article_content = fetch_page(url)
     if article_content:
         title, content = parse_article(article_content)
-        if title and content:
-            save_to_word(content, title)
+        return title, content
+    return None, None
 
 def parse_article(content):
     try:
@@ -41,18 +41,10 @@ def parse_article(content):
         logging.error(f"Error parsing article: {e}")
         return None, None
 
-def save_to_word(article_content, title):
-    file_name = title.replace(" ", "_") + ".docx"
-    file_path = os.path.join('articles', file_name)
-
-    if not os.path.exists(file_path):
-        doc = Document()
-        doc.add_heading(title, 0)
-        doc.add_paragraph(article_content)
-        doc.save(file_path)
-        logging.info(f"Saved '{title}' to Word document.")
-    else:
-        logging.warning(f"File '{file_name}' already exists. Skipping.")
+def append_to_word(doc, article_content, title):
+    doc.add_heading(title, level=1)
+    doc.add_paragraph(article_content)
+    doc.add_page_break()
 
 def main():
     os.makedirs('articles', exist_ok=True)
@@ -61,9 +53,17 @@ def main():
 
     if main_page_content:
         article_links = parse_main_page(main_page_content)
+        doc = Document()
 
         with ThreadPoolExecutor(max_workers=10) as executor:
-            executor.map(fetch_and_save_article, article_links)
+            results = executor.map(fetch_and_parse_article, article_links)
+
+            for title, content in results:
+                if title and content:
+                    append_to_word(doc, content, title)
+
+        doc.save(os.path.join('articles', 'all_articles.docx'))
+        logging.info("All articles saved to one Word document.")
 
 if __name__ == "__main__":
     main()
