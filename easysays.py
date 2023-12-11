@@ -53,6 +53,9 @@ def main():
 
     if main_page_content:
         article_links = parse_main_page(main_page_content)
+
+        logging.info(f"Total articles found: {len(article_links)}")
+
         doc = Document()
 
         with ThreadPoolExecutor(max_workers=10) as executor:
