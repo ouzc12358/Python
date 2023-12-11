@@ -27,7 +27,12 @@ def fetch_and_parse_article(url):
     article_content = fetch_page(url)
     if article_content:
         title, content = parse_article(article_content)
-        return title, content
+        if title and content:
+            return title, content
+        else:
+            logging.error(f"Failed to parse article: {url}")
+    else:
+        logging.error(f"Failed to fetch article: {url}")
     return None, None
 
 def parse_article(content):
@@ -46,6 +51,18 @@ def append_to_word(doc, article_content, title):
     doc.add_paragraph(article_content)
     doc.add_page_break()
 
+def review_specific_articles():
+    urls = [
+        "http://paulgraham.com/greatwork.html",  # URL for "How to Do Great Work"
+        "http://paulgraham.com/super.html"       # URL for "Superlinear Returns"
+    ]
+
+    for url in urls:
+        content = fetch_page(url)
+        if content:
+            title, article_content = parse_article(content)
+            print(f"Title: {title}\nSnippet: {article_content[:500]}...\n\n")
+
 def main():
     os.makedirs('articles', exist_ok=True)
     main_page_url = "http://paulgraham.com/articles.html"
@@ -61,12 +78,16 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as executor:
             results = executor.map(fetch_and_parse_article, article_links)
 
-            for title, content in results:
-                if title and content:
+            for result in results:
+                if result:
+                    title, content = result
                     append_to_word(doc, content, title)
 
         doc.save(os.path.join('articles', 'all_articles.docx'))
         logging.info("All articles saved to one Word document.")
+
+    # Review specific articles
+    review_specific_articles()
 
 if __name__ == "__main__":
     main()
