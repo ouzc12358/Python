@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from docx import Document
 import os
 import logging
 from concurrent.futures import ThreadPoolExecutor
@@ -47,6 +48,11 @@ def parse_article(content):
         logging.error(f"Error parsing article: {e}")
         return None, None
 
+def add_article_to_docx(doc, title, content):
+    doc.add_heading(title, level=1)
+    doc.add_paragraph(content)
+    doc.add_page_break()
+
 def main():
     os.makedirs('articles', exist_ok=True)
     main_page_url = "http://paulgraham.com/articles.html"
@@ -55,17 +61,20 @@ def main():
     if main_page_content:
         article_links = parse_main_page(main_page_content)
 
-        with open(os.path.join('articles', 'all_articles.txt'), 'w', encoding='utf-8') as file:
-            with ThreadPoolExecutor(max_workers=10) as executor:
-                results = executor.map(fetch_and_parse_article, article_links)
+        doc = Document()
+        doc.add_heading('Collected Articles from Paul Graham', 0)
 
-                for result in results:
-                    if result:
-                        title, content = result
-                        file.write(f"Title: {title}\n\n{content}\n\n{'-'*40}\n\n")
-                        logging.info(f"Article '{title}' written to text file.")
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            results = executor.map(fetch_and_parse_article, article_links)
 
-        logging.info("All articles saved to a text file.")
+            for result in results:
+                if result:
+                    title, content = result
+                    add_article_to_docx(doc, title, content)
+                    logging.info(f"Added '{title}' to the document.")
+
+        doc.save(os.path.join('articles', 'Collected_Articles.docx'))
+        logging.info("All articles saved in a book format to a Word document.")
 
 if __name__ == "__main__":
     main()
