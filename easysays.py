@@ -42,7 +42,10 @@ def parse_article(content):
         body = soup.find('body')
         if not body:
             raise ValueError("Body tag not found")
-        article_content = body.text.strip()
+
+        # Extracting and cleaning text
+        article_content = ' '.join(body.stripped_strings)
+
         return title, article_content
     except Exception as e:
         logging.error(f"Error parsing article: {e}")
