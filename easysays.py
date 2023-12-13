@@ -43,8 +43,10 @@ def parse_article(content):
         if not body:
             raise ValueError("Body tag not found")
 
-        # Extracting and cleaning text
+        # Enhanced text extraction and cleaning
         article_content = ' '.join(body.stripped_strings)
+        article_content = article_content.replace('\n', ' ').replace('\r', ' ')
+        article_content = ' '.join(article_content.split())
 
         return title, article_content
     except Exception as e:
